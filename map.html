@@ -3,7 +3,7 @@
 <style>
 .tract {
   stroke: #777;
-  stroke-width: 0.1px;
+  stroke-width: 0.05px;
 }
 .tract:hover {
   stroke: orange;
@@ -12,7 +12,7 @@
 .tract-border {
   fill: none;
   /*stroke: #777;*/
-  stroke-width: 0.1px;
+  stroke-width: 0.05px;
   pointer-events: none;
 }
 .tract-border-state {
@@ -31,10 +31,10 @@
   font-size:11pt;
 }
 .background {
-  fill:#c5c5c5;
+  fill:#f5f5f5;
 }
 body {
-  background: #c5c5c5;
+  background: #f5f5f5;
   font-family: sans-serif;
 }
 .bar {
@@ -45,10 +45,26 @@ body {
   font-family: sans-serif;
   text-anchor: middle;
 }
+#details .background {
+  fill: #f5f5f5;
+  fill-opacity: 0.7;
+}
 </style>
 <h2>Resultados Plebiscito en Colombia por Ciudades</h2>
 <h4>Haga click o pase el mouse para explorar</h4>
 <svg width="900" height="700"></svg>
+<p>Este mapa muestra las votaciones por municipios Colombianos. Cada municipio está coloreado según la diferencia entre el porcentaje de votos por el si vs el porcentaje de votos por el no. Más rojo es más no, más azul es más por el si</p>
+
+<p>
+Datos del plebiscito tomados del <a href="http://lasillavacia.com/hagame-el-cruce/asi-es-el-pais-que-voto-no-58201"> artículo de la Silla vacía</a>
+</p>
+<p>
+GEO Json <a href="https://github.com/finiterank/mapa-colombia-js/blob/master/colombia-municipios.json">del proyecto mapa-colombia-js en github</a> de <a href="https://github.com/finiterank">Javier Moreno</a>
+</p>
+<p>
+Desarrollado por <a href="http://johnguerra.co">John Alexis Guerra Gómez</a>
+</p>
+
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://d3js.org/topojson.v1.min.js"></script>

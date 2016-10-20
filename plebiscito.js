@@ -94,15 +94,22 @@ function ready(error, mapData, data) {
 
   // The details
   var wScale = d3.scaleLinear()
-    .domain([-1,1])
+    .domain([-1, 1])
     .range([-200, 200]);
   var details_layer = svg.append("g")
+    .attr("id", "details")
     .attr("transform", "translate(" + (width/2-100) + ", 30)");
-
+  details_layer.append("rect")
+    .attr("class", "background")
+    .attr("transform", "translate(-150, -20)")
+    .attr("width", 500)
+    .attr("rx", 5)
+    .attr("ry", 5)
+    .attr("height", 60);
   details_layer.append("text")
     .attr("id", "cityLegend")
     .text("Colombia")
-    .attr("transform", "translate(100, -10)");
+    .attr("transform", "translate(100, 0)");
 
   var detailsBars = details_layer.selectAll("bar")
     .data([0.4978, -0.5021])
@@ -114,7 +121,7 @@ function ready(error, mapData, data) {
     .attr("width", 0)
     .attr("height", 20)
     .attr("x", 100)
-    .attr("y", 0)
+    .attr("y", 10)
     .style("fill", color)
     .transition()
     .duration(500)
@@ -122,8 +129,8 @@ function ready(error, mapData, data) {
       .attr("width", function (d) { return d>0 ? wScale(d) : wScale(-d); });
   detailsBars.append("text")
     .text(function(d) { return fmt(d>0?d:-d)})
-    .attr("dx", function (d) { return d>0 ? 10 : - 10; })
-    .attr("dy", 14)
+    .attr("dx", function (d) { return d>0 ? 5 : -5; })
+    .attr("dy", 24)
     .attr("x", 100)
     .style("text-anchor", function (d) { return d>0 ? "start": "end";})
     .transition()
@@ -141,9 +148,19 @@ function ready(error, mapData, data) {
     // .shapeWidth(30)
     .cells(7)
     .orient('vertical')
-    .title('%Si - %No')
+    .title('Diferencia')
+    .labels([
+    " 100.00% por el Si",
+    "  66.67%",
+    "  33.33%",
+    "   0.00%",
+    " -33.33%",
+    " -66.67%",
+    "-100.00% por el No",
+    ].reverse())
     .labelFormat(fmt)
-    .labelAlign("start")
+    .ascending(true)
+    .labelAlign("end")
     .scale(color);
 
   svg.select(".legend")
@@ -180,15 +197,15 @@ function ready(error, mapData, data) {
 
   function updateDetails(d) {
 
-    var data = [0.4978, -50.21],
-        name = "Colombia",
+    var data = [0.4978, -0.5021],
+        name = "Colombia diferencia " + fmt(data[0] + data[1]),
         city;
 
     if (d) {
       city = dictCities[d.properties.name];
       if (city) {
         data =  [city["% Si"], -city["% No"]];
-        name = d.properties.name;
+        name = d.properties.name + " diferencia: " + fmt(data[0] + data[1]);
       }
     }
     console.log(data);
