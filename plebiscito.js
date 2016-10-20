@@ -1,5 +1,5 @@
 var svg = d3.select("svg"),
-    width = $("svg").width(),
+    width = $(document).width()*10/12,
     height = $(document).height()-100,
     margin = { top: 20, bottom:20, right: 20, left: 0},
     centered,
