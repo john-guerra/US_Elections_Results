@@ -42,10 +42,18 @@ function ready(error, mapData, data) {
     .attr('class', 'background')
     .attr('width', width)
     .attr('height', height)
-    .on('click', clicked);
+    // .on('click', clicked);
   // To allow the zoom back
   // svg.on('click', clicked);
-  var g = svg.append("g");
+  var g = svg.append("g")
+      .style("pointer-events", "all")
+    .call(d3.zoom()
+        .scaleExtent([1 / 2, 4])
+        .on("zoom", zoomed));
+
+  function zoomed() {
+    g.attr("transform", d3.event.transform);
+  };
 
 
   // EPSG:32111
@@ -62,7 +70,7 @@ function ready(error, mapData, data) {
     .data(land.features)
     .enter().append("path")
       .attr("class", "tract")
-      .on('click', clicked)
+      // .on('click', clicked)
       .on('mouseover', updateDetails)
       .style("fill", function (d) {
         var city = dictCities[d.properties.name];
