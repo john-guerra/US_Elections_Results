@@ -1,11 +1,12 @@
 var svg = d3.select("svg"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height"),
-    margin = { top: 50, bottom:20, right: 20, left: 20},
+    width = $("svg").width(),
+    height = $(document).height()-100,
+    margin = { top: 20, bottom:20, right: 20, left: 0},
     centered,
     fmt = d3.format(" >5.2%");
 
-
+svg.attr("width", width)
+  .attr("height", height);
 function ready(error, mapData, data) {
   if (error) throw error;
 
@@ -95,7 +96,7 @@ function ready(error, mapData, data) {
   // The details
   var wScale = d3.scaleLinear()
     .domain([-1, 1])
-    .range([-200, 200]);
+    .range([-width/4, width/4]);
   var details_layer = svg.append("g")
     .attr("id", "details")
     .attr("transform", "translate(" + (width/2-100) + ", 30)");
@@ -142,7 +143,7 @@ function ready(error, mapData, data) {
   // The legend
   svg.append("g")
     .attr("class", "legend")
-    .attr("transform", "translate(760,20)");
+    .attr("transform", "translate("+(width-margin.right-100)+",100)");
 
   var legendLinear = d3.legendColor()
     // .shapeWidth(30)
