@@ -46,7 +46,7 @@ function ready(error, mapData, data) {
   // To allow the zoom back
   // svg.on("click", clicked);
   var zoom = d3.zoom()
-        .scaleExtent([1, 4])
+        .scaleExtent([1, 15])
         .on("zoom", zoomed);
 
   svg.style("pointer-events", "all")
@@ -54,6 +54,7 @@ function ready(error, mapData, data) {
   var g = svg.append("g");
 
   function zoomed() {
+    console.log(this);
     g.attr("transform", d3.event.transform);
   };
 
@@ -130,7 +131,7 @@ function ready(error, mapData, data) {
   detailsBars
     .append("rect")
     .attr("width", 0)
-    .attr("height", 20)
+    .attr("height", width>767? 20 : 10)
     .attr("x", 100)
     .attr("y", 10)
     .style("fill", color)
@@ -204,10 +205,27 @@ function ready(error, mapData, data) {
     // svg.selectAll("path")
     //   .style("fill", function(d){return centered && d===centered ? "#D5708B" : fillFn(d);});
 
+    // var trans = g.transition().duration(750);
+
+    // zoom.translateTo(trans, width/2, height/2);
+    // zoom.scaleTo(trans, k);
+    // zoom.translateTo(trans, -x, -y);
+    // var transform = d3.zoomTransform(d3.select("svg").node())
+    //       .translate(width/2, height/2)
+    //       .scale(k)
+    //       .translate(-x, -y);
+
     // Zoom
     g.transition()
       .duration(750)
+      // .call(zoom.transform, transform)
+      // .call(zoom.transform, d3.zoomTransform(d3.select("svg").node())
+      //     .translate(width/2, height/2)
+      //     .scale(k)
+      //     .translate(-x, -y)
+      //     );
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+      // .style("transform", "translate(" + transform.x + "px," + transform.y + "px) scale(" + transform.k + ")");
   }
 
   function updateDetails(d) {
