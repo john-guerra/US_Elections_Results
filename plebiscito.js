@@ -54,7 +54,7 @@ function ready(error, mapData, data) {
   var g = svg.append("g");
 
   function zoomed() {
-    console.log(this);
+    console.log(d3.event.transform);
     g.attr("transform", d3.event.transform);
   };
 
@@ -189,10 +189,12 @@ function ready(error, mapData, data) {
 
     // Compute centroid of the selected path
     if (d && centered !== d) {
+    // if (d) {
       var centroid = path.centroid(d);
       x = centroid[0];
       y = centroid[1];
-      k = 6;
+      // k = zoom.scaleExtent()[1];
+      k = 10;
       centered = d;
     } else {
       x = width / 2;
@@ -201,31 +203,15 @@ function ready(error, mapData, data) {
       centered = null;
     }
 
-    // // Highlight the clicked province
-    // svg.selectAll("path")
-    //   .style("fill", function(d){return centered && d===centered ? "#D5708B" : fillFn(d);});
+    
 
-    // var trans = g.transition().duration(750);
-
-    // zoom.translateTo(trans, width/2, height/2);
-    // zoom.scaleTo(trans, k);
-    // zoom.translateTo(trans, -x, -y);
-    // var transform = d3.zoomTransform(d3.select("svg").node())
-    //       .translate(width/2, height/2)
-    //       .scale(k)
-    //       .translate(-x, -y);
-
-    // Zoom
-    g.transition()
+    // Manually Zoom
+    svg.transition()
       .duration(750)
-      // .call(zoom.transform, transform)
-      // .call(zoom.transform, d3.zoomTransform(d3.select("svg").node())
-      //     .translate(width/2, height/2)
-      //     .scale(k)
-      //     .translate(-x, -y)
-      //     );
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
-      // .style("transform", "translate(" + transform.x + "px," + transform.y + "px) scale(" + transform.k + ")");
+      .call(zoom.transform, d3.zoomIdentity
+          .translate(width/2, height/2)
+          .scale(k )
+          .translate(-x, -y));
   }
 
   function updateDetails(d) {
@@ -241,8 +227,8 @@ function ready(error, mapData, data) {
         name = d.properties.name + " diferencia: " + fmt(data[0] + data[1]);
       }
     }
-    console.log(data);
-    console.log(name);
+    // console.log(data);
+    // console.log(name);
     var detailsBars = details_layer
       .selectAll(".bar")
       .data(data);
