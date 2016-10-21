@@ -1,7 +1,7 @@
 var svg = d3.select("svg"),
     width = $(document).width()*10/12,
-    height = $(document).height()-100,
-    margin = { top: 20, bottom:20, right: 20, left: 0},
+    height = $(document).height()-200,
+    margin = { top: 20, bottom: width>767 ? 20 : 100, right: 20, left: 0},
     centered,
     fmt = d3.format(" >5.2%");
 
@@ -38,14 +38,25 @@ function ready(error, mapData, data) {
   });
 
   // Add background
-  svg.append('rect')
-    .attr('class', 'background')
-    .attr('width', width)
-    .attr('height', height)
-    .on('click', clicked);
+  svg.append("rect")
+    .attr("class", "background")
+    .attr("width", width)
+    .attr("height", height)
+    // .on("click", clicked);
   // To allow the zoom back
-  // svg.on('click', clicked);
+  // svg.on("click", clicked);
+  var zoom = d3.zoom()
+        .scaleExtent([1, 15])
+        .on("zoom", zoomed);
+
+  svg.style("pointer-events", "all")
+    .call(zoom);
   var g = svg.append("g");
+
+  function zoomed() {
+    console.log(d3.event.transform);
+    g.attr("transform", d3.event.transform);
+  };
 
 
   // EPSG:32111
@@ -62,8 +73,8 @@ function ready(error, mapData, data) {
     .data(land.features)
     .enter().append("path")
       .attr("class", "tract")
-      .on('click', clicked)
-      .on('mouseover', updateDetails)
+      .on("click", clicked)
+      .on("mouseover", updateDetails)
       .style("fill", function (d) {
         var city = dictCities[d.properties.name];
         if (city)
@@ -96,7 +107,7 @@ function ready(error, mapData, data) {
   // The details
   var wScale = d3.scaleLinear()
     .domain([-1, 1])
-    .range([-width/4, width/4]);
+    .range([-width/3, width/3]);
   var details_layer = svg.append("g")
     .attr("id", "details")
     .attr("transform", "translate(" + (width/2-100) + ", 30)");
@@ -120,7 +131,7 @@ function ready(error, mapData, data) {
   detailsBars
     .append("rect")
     .attr("width", 0)
-    .attr("height", 20)
+    .attr("height", width>767? 20 : 10)
     .attr("x", 100)
     .attr("y", 10)
     .style("fill", color)
@@ -147,13 +158,17 @@ function ready(error, mapData, data) {
   // The legend
   svg.append("g")
     .attr("class", "legend")
-    .attr("transform", "translate("+(width-margin.right-150)+",100)");
+    .attr("transform",
+        width>767 ?
+        "translate("+(width - margin.right - 150)+",100)" :
+        "translate("+(width/2 - 100)+"," + (height - 120) + ")"
+        );
 
   var legendLinear = d3.legendColor()
     // .shapeWidth(30)
     .cells(7)
-    .orient('vertical')
-    .title('Diferencia')
+    .orient(width>767 ? "vertical" : "horizontal")
+    .title("Diferencia")
     .labels([
     " 100.00% por el Si",
     "  66.67%",
@@ -178,10 +193,12 @@ function ready(error, mapData, data) {
 
     // Compute centroid of the selected path
     if (d && centered !== d) {
+    // if (d) {
       var centroid = path.centroid(d);
       x = centroid[0];
       y = centroid[1];
-      k = 6;
+      // k = zoom.scaleExtent()[1];
+      k = 10;
       centered = d;
     } else {
       x = width / 2;
@@ -190,14 +207,15 @@ function ready(error, mapData, data) {
       centered = null;
     }
 
-    // // Highlight the clicked province
-    // svg.selectAll('path')
-    //   .style('fill', function(d){return centered && d===centered ? '#D5708B' : fillFn(d);});
 
-    // Zoom
-    g.transition()
+
+    // Manually Zoom
+    svg.transition()
       .duration(750)
-      .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')scale(' + k + ')translate(' + -x + ',' + -y + ')');
+      .call(zoom.transform, d3.zoomIdentity
+          .translate(width/2, height/2)
+          .scale(k )
+          .translate(-x, -y));
   }
 
   function updateDetails(d) {
@@ -213,8 +231,8 @@ function ready(error, mapData, data) {
         name = d.properties.name + " diferencia: " + fmt(data[0] + data[1]);
       }
     }
-    console.log(data);
-    console.log(name);
+    // console.log(data);
+    // console.log(name);
     var detailsBars = details_layer
       .selectAll(".bar")
       .data(data);
