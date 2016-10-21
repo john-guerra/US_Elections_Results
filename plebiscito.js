@@ -1,7 +1,7 @@
 var svg = d3.select("svg"),
     width = $(document).width()*10/12,
     height = $(document).height()-200,
-    margin = { top: 20, bottom: width>400 ? 20 : 100, right: 20, left: 0},
+    margin = { top: 20, bottom: width>767 ? 20 : 100, right: 20, left: 0},
     centered,
     fmt = d3.format(" >5.2%");
 
@@ -154,7 +154,7 @@ function ready(error, mapData, data) {
   svg.append("g")
     .attr("class", "legend")
     .attr("transform", 
-        width>400 ? 
+        width>767 ? 
         "translate("+(width - margin.right - 100)+",100)" : 
         "translate("+(width/2 - 100)+"," + (height - 120) + ")"  
         );
@@ -162,7 +162,7 @@ function ready(error, mapData, data) {
   var legendLinear = d3.legendColor()
     // .shapeWidth(30)
     .cells(7)
-    .orient(width>400 ? "vertical" : "horizontal")
+    .orient(width>767 ? "vertical" : "horizontal")
     .title("Diferencia")
     .labels([
     " 100.00% por el Si",
