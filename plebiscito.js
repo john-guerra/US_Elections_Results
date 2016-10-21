@@ -103,7 +103,7 @@ function ready(error, mapData, data) {
   details_layer.append("rect")
     .attr("class", "background")
     .attr("transform", "translate(-150, -20)")
-    .attr("width", 500)
+    .attr("width", width/2)
     .attr("rx", 5)
     .attr("ry", 5)
     .attr("height", 60);
@@ -129,7 +129,11 @@ function ready(error, mapData, data) {
       .attr("x", function (d) { return d>0 ? 100 : 100 - wScale(-d); })
       .attr("width", function (d) { return d>0 ? wScale(d) : wScale(-d); });
   detailsBars.append("text")
-    .text(function(d) { return fmt(d>0?d:-d)})
+    .text(function(d) {
+      return (d>0? "": "No ") +
+        fmt(d>0?d:-d) +
+        (d>0 ? " Si" : "")
+    })
     .attr("dx", function (d) { return d>0 ? 5 : -5; })
     .attr("dy", 24)
     .attr("x", 100)
@@ -143,7 +147,7 @@ function ready(error, mapData, data) {
   // The legend
   svg.append("g")
     .attr("class", "legend")
-    .attr("transform", "translate("+(width-margin.right-100)+",100)");
+    .attr("transform", "translate("+(width-margin.right-150)+",100)");
 
   var legendLinear = d3.legendColor()
     // .shapeWidth(30)
@@ -223,7 +227,11 @@ function ready(error, mapData, data) {
       .style("fill", color);
 
     detailsBars.select("text")
-      .text(function(d) { return fmt(d>0?d:-d)})
+      .text(function(d) {
+            return (d>0? "": "No ") +
+              fmt(d>0?d:-d) +
+              (d>0 ? " Si" : "")
+          })
       .transition()
       .duration(500)
         .attr("x", function (d) { return d>0 ? 100 + wScale(d) : 100 - wScale(-d); })
