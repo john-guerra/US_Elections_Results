@@ -113,8 +113,8 @@ function ready(error, mapData, data) {
     .attr("transform", "translate(" + (width/2-100) + ", 30)");
   details_layer.append("rect")
     .attr("class", "background")
-    .attr("transform", "translate(-150, -20)")
-    .attr("width", width/2)
+    .attr("transform", "translate("+ (-wScale.range()[1]+100) +", -20)")
+    .attr("width", wScale.range()[1]*2+70 )
     .attr("rx", 5)
     .attr("ry", 5)
     .attr("height", 60);
