@@ -1,7 +1,7 @@
 var svg = d3.select("svg"),
     width = $(document).width()*10/12,
-    height = $(document).height()-100,
-    margin = { top: 20, bottom:20, right: 20, left: 0},
+    height = $(document).height()-200,
+    margin = { top: 20, bottom: width>400 ? 20 : 100, right: 20, left: 0},
     centered,
     fmt = d3.format(" >5.2%");
 
@@ -38,18 +38,20 @@ function ready(error, mapData, data) {
   });
 
   // Add background
-  svg.append('rect')
-    .attr('class', 'background')
-    .attr('width', width)
-    .attr('height', height)
-    // .on('click', clicked);
+  svg.append("rect")
+    .attr("class", "background")
+    .attr("width", width)
+    .attr("height", height)
+    // .on("click", clicked);
   // To allow the zoom back
-  // svg.on('click', clicked);
-  var g = svg.append("g")
-      .style("pointer-events", "all")
-    .call(d3.zoom()
-        .scaleExtent([1 / 2, 4])
-        .on("zoom", zoomed));
+  // svg.on("click", clicked);
+  var zoom = d3.zoom()
+        .scaleExtent([1, 4])
+        .on("zoom", zoomed);
+
+  svg.style("pointer-events", "all")
+    .call(zoom);
+  var g = svg.append("g");
 
   function zoomed() {
     g.attr("transform", d3.event.transform);
@@ -70,8 +72,8 @@ function ready(error, mapData, data) {
     .data(land.features)
     .enter().append("path")
       .attr("class", "tract")
-      // .on('click', clicked)
-      .on('mouseover', updateDetails)
+      .on("click", clicked)
+      .on("mouseover", updateDetails)
       .style("fill", function (d) {
         var city = dictCities[d.properties.name];
         if (city)
@@ -151,13 +153,17 @@ function ready(error, mapData, data) {
   // The legend
   svg.append("g")
     .attr("class", "legend")
-    .attr("transform", "translate("+(width-margin.right-100)+",100)");
+    .attr("transform", 
+        width>400 ? 
+        "translate("+(width - margin.right - 100)+",100)" : 
+        "translate("+(width/2 - 100)+"," + (height - 120) + ")"  
+        );
 
   var legendLinear = d3.legendColor()
     // .shapeWidth(30)
     .cells(7)
-    .orient('vertical')
-    .title('Diferencia')
+    .orient(width>400 ? "vertical" : "horizontal")
+    .title("Diferencia")
     .labels([
     " 100.00% por el Si",
     "  66.67%",
@@ -195,13 +201,13 @@ function ready(error, mapData, data) {
     }
 
     // // Highlight the clicked province
-    // svg.selectAll('path')
-    //   .style('fill', function(d){return centered && d===centered ? '#D5708B' : fillFn(d);});
+    // svg.selectAll("path")
+    //   .style("fill", function(d){return centered && d===centered ? "#D5708B" : fillFn(d);});
 
     // Zoom
     g.transition()
       .duration(750)
-      .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')scale(' + k + ')translate(' + -x + ',' + -y + ')');
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
   }
 
   function updateDetails(d) {
