@@ -106,7 +106,7 @@ function ready(error, mapData, data) {
   // The details
   var wScale = d3.scaleLinear()
     .domain([-1, 1])
-    .range([-width/4, width/4]);
+    .range([-width/3, width/3]);
   var details_layer = svg.append("g")
     .attr("id", "details")
     .attr("transform", "translate(" + (width/2-100) + ", 30)");
