@@ -59,19 +59,19 @@ function ready(error, us, data) {
       .on("click", clicked)
       .on("mouseover", updateDetails)
       .style("fill", function (d) {
-        var city = dictCities[d.properties.name];
+        var city = dictCities[d.id];
         if (city)
           return color(city.result);
         else {
-          console.log(d.properties.name + "," + d.properties.dpt);
+          console.log(d.id);
           return color(0);
         }
       })
       .attr("d", path)
     .append("title")
       .text(function(d) {
-        var city = dictCities[d.properties.name];
-        var msg = d.properties.name + ", " + d.properties.dpt;
+        var city = dictCities[d.id];
+        var msg = d.id;
         if (city)
           msg += " %Si - %No: " + fmt(city.result);
         return msg;
@@ -218,10 +218,10 @@ function ready(error, us, data) {
         city;
 
     if (d) {
-      city = dictCities[d.properties.name];
+      city = dictCities[d.id];
       if (city) {
         data =  [city["% Si"], -city["% No"]];
-        name = d.properties.name + " Difference: " + fmt(data[0] + data[1]);
+        name = d.id + " Difference: " + fmt(data[0] + data[1]);
       }
     }
     // console.log(data);
