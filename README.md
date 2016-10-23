@@ -1,15 +1,7 @@
-Resultados Plebiscito en Colombia por Ciudades
+US 2012 Presidential Elections by County
 ==============================================
-<h4>Haga click o pase el mouse para explorar</h4>
-<svg width="900" height="700"></svg>
-<p>Este mapa muestra las votaciones por municipios Colombianos. Cada municipio está coloreado según la diferencia entre el porcentaje de votos por el si vs el porcentaje de votos por el no. Más rojo es más no, más azul es más por el si</p>
+Shows a zoomable cloropleth map of the us counties results.
 
-<p>
-Datos del plebiscito tomados del <a href="http://lasillavacia.com/hagame-el-cruce/asi-es-el-pais-que-voto-no-58201"> artículo de la Silla vacía</a>
-</p>
-<p>
-GEO Json <a href="https://github.com/finiterank/mapa-colombia-js/blob/master/colombia-municipios.json">del proyecto mapa-colombia-js en github</a> de <a href="https://github.com/finiterank">Javier Moreno</a>
-</p>
-<p>
-Desarrollado por <a href="http://johnguerra.co">John Alexis Guerra Gómez</a>
-</p># US_Elections_Results
+From [Tony McGovern's idea](https://twitter.com/tonmcg/status/790170711193063424)
+
+Data from [The Guardian](https://fusiontables.google.com/DataSource?docid=1qcQLqrAIAe3RcEfdWSm_QcXMLmteVg4uSpSs1rM#rows:id=1)
