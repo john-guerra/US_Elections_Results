@@ -12,4 +12,4 @@ GEO Json <a href="https://github.com/finiterank/mapa-colombia-js/blob/master/col
 </p>
 <p>
 Desarrollado por <a href="http://johnguerra.co">John Alexis Guerra Gómez</a>
-</p>
+</p># US_Elections_Results
