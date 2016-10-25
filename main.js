@@ -3,7 +3,8 @@ var svg = d3.select("svg"),
     height = $(document).height()-200,
     margin = { top: 20, bottom: width>767 ? 20 : 100, right: 20, left: 0},
     centered,
-    fmt = d3.format(" >5.2%");
+    fmt = d3.format(" >5.2%"),
+    errorCount = 0;
 
 svg.attr("width", width)
   .attr("height", height);
@@ -12,14 +13,15 @@ function ready(error, us, data) {
 
 
   var dictCities = {};
-  // data.forEach(function (d) {
-  //   //Parse the percentages
-  //   d["% No"] = +(d["% No"].slice(0,-1).replace(",", "."))/100;
-  //   d["% Si"] = +(d["% Si"].slice(0,-1).replace(",", "."))/100;
-  //   d.result = d["% Si"] - d["% No"];
-  //   var res = {};
-  //   dictCities[d.Municipio.toUpperCase()]=d;
-  // });
+  data.forEach(function (d) {
+    //Parse the percentages
+    d["per_Repub"] = +(d["per_Repub"].slice(0,-1).replace(",", "."));
+    d["per_Dem"] = +(d["per_Dem"].slice(0,-1).replace(",", "."));
+    d.result = d["per_Dem"] - d["per_Repub"];
+    d.county_fips_combined = +d.county_fips_combined;
+    var res = {};
+    dictCities[d.county_fips_combined]=d;
+  });
 
   var color = d3.scaleSequential(d3.interpolateRdBu)
     .domain([-1, 1]);
@@ -63,7 +65,8 @@ function ready(error, us, data) {
         if (city)
           return color(city.result);
         else {
-          console.log(d.id);
+          errorCount ++;
+          console.log(d.id + " Not found" + " errors = " + errorCount);
           return color(0);
         }
       })
@@ -73,7 +76,7 @@ function ready(error, us, data) {
         var city = dictCities[d.id];
         var msg = d.id;
         if (city)
-          msg += " %Si - %No: " + fmt(city.result);
+          msg += " Difference: " + fmt(city.result);
         return msg;
       });
 
@@ -134,9 +137,9 @@ function ready(error, us, data) {
       .attr("width", function (d) { return d>0 ? wScale(d) : wScale(-d); });
   detailsBars.append("text")
     .text(function(d) {
-      return (d>0? "": "No ") +
+      return (d>0? "": "Rep ") +
         fmt(d>0?d:-d) +
-        (d>0 ? " Si" : "")
+        (d>0 ? " Dem" : "")
     })
     .attr("dx", function (d) { return d>0 ? 5 : -5; })
     .attr("dy", 24)
@@ -220,7 +223,7 @@ function ready(error, us, data) {
     if (d) {
       city = dictCities[d.id];
       if (city) {
-        data =  [city["% Si"], -city["% No"]];
+        data =  [city["per_Dem"], -city["per_Repub"]];
         name = d.id + " Difference: " + fmt(data[0] + data[1]);
       }
     }
