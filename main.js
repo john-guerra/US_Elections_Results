@@ -53,7 +53,7 @@ function ready(error, us, data) {
     };
 
     var projection = d3.geoAlbersUsa()
-        .scale(1280)
+        .scale(width)
         .translate([width / 2, height / 2]);
 
     var path = d3.geoPath()
@@ -294,5 +294,5 @@ function ready(error, us, data) {
 
 d3.queue()
     .defer(d3.json, "us.json")
-    .defer(d3.csv, "US presidential election results by county.csv")
+    .defer(d3.csv, "2016_US_County_Level_Presidential_Results.csv")
     .await(ready);
