@@ -304,8 +304,14 @@ function ready(error, us, data) {
 
         details_layer.select("#cityLegend").text(name);
 
+        if (state == 'AK') {
+            var report_level = "<b>[Alaska State-level Results Reported]</b><br/>";
+        } else {
+            report_level = "<b>County, State: </b>" + county + ', ' + state + "<br/>";
+        }
+
         // show tooltip with information from the __data__ property of the element
-        var content = "<b>County, State: </b>" + county + ', ' + state + "<br/>" +
+        var content = report_level +
             "<b>Hillary Clinton: </b>" + comma_fmt(dem_votes) + "<br/>" +
             "<b>Donald J. Trump: </b>" + comma_fmt(gop_votes) + "<br/>" +
             "<b>Total Votes Cast: </b>" + comma_fmt(votes_total) + "<br/>";
