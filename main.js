@@ -34,7 +34,7 @@ function ready(error, us, data) {
         d.result = d["per_dem"] - d["per_gop"];
         d.gop_votes = +d.votes_gop;
         d.dem_votes = +d.votes_dem;
-        d.votes_total = +d.votes_total;        
+        d.votes_total = +d.total_votes;        
         d.combined_fips = +d.combined_fips;
         dictCities[d.combined_fips] = d;
     });
@@ -331,5 +331,5 @@ function hideDetails() {
 
 d3.queue()
     .defer(d3.json, "us.json")
-    .defer(d3.csv, "US presidential election results by county.csv")
+    .defer(d3.csv, "2016_US_County_Level_Presidential_Results.csv")
     .await(ready);
