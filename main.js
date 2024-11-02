@@ -328,7 +328,7 @@ function ready(error, us, data) {
     // show tooltip with information from the __data__ property of the element
     let content =
       report_level +
-      "<b>Hillary Clinton: </b>" +
+      "<b>Joe Biden: </b>" +
       comma_fmt(dem_votes) +
       "<br/>" +
       "<b>Donald J. Trump: </b>" +
